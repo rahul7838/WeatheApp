@@ -19,17 +19,17 @@ class WeatherPresenter(private val serviceCall: ServiceCall) : WeatherContract.P
         serviceCall.getWeatherResponse()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess{view?.hideLoading()}
             .subscribe({ success -> handleSuccessResult(success)},
                 { error -> handleFailureResult(error)})
             .addTo(compositeDisposable)
     }
 
     private fun handleFailureResult(error: Throwable) {
-
+        view?.hideLoading()
     }
 
     private fun handleSuccessResult(success: WeatherResponse) {
+        view?.hideLoading()
         val avgTemp = success.forecast.forecastday[0].day.avgtemp_c
     }
 }

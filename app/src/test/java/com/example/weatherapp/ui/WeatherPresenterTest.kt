@@ -6,10 +6,7 @@ import io.reactivex.Single
 import org.junit.After
 import org.junit.Before
 
-import org.junit.Assert.*
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -40,10 +37,20 @@ class WeatherPresenterTest {
     @Test
     fun getWeatherDataSuccessTest() {
         Mockito.`when`(serviceCall.getWeatherResponse())
-            .thenReturn(Single.just(MockDataProvider.getWeatherResponse()))
+            .thenReturn(Single.just(MockDataProvider.getWeatherResponseSuccess()))
         presenter.getWeatherData()
         Mockito.verify(view).showLoading()
-        Mockito.verify(view).hideLoading()
         Mockito.verify(serviceCall).getWeatherResponse()
+        Mockito.verify(view).hideLoading()
+    }
+
+    @Test
+    fun getWeatherDataErrorTest() {
+        Mockito.`when`(serviceCall.getWeatherResponse())
+            .thenReturn(Single.error(MockDataProvider.getWeatherResponseError()))
+        presenter.getWeatherData()
+        Mockito.verify(view).showLoading()
+        Mockito.verify(serviceCall).getWeatherResponse()
+        Mockito.verify(view).hideLoading()
     }
 }

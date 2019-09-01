@@ -101,8 +101,12 @@ sealed class MockDataProvider {
             )
         }
 
-        fun getWeatherResponse(): WeatherResponse {
+        fun getWeatherResponseSuccess(): WeatherResponse {
             return WeatherResponse(getAlert(), getCurrent(), getForecast(), getLocation())
+        }
+
+        fun getWeatherResponseError(): Throwable {
+            return Throwable()
         }
 
     }
