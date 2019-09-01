@@ -11,7 +11,7 @@ class RetrofitApiClient {
 
     fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://api.apixu.com/v1")
+            .baseUrl("http://api.apixu.com/")
             .client(getOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -28,6 +28,7 @@ class RetrofitApiClient {
             .writeTimeout(READ_WRITE_TIMEOUT, TimeUnit.SECONDS)
             .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(WeatherRequestInterceptor())
             .build()
     }
 

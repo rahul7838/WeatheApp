@@ -13,7 +13,7 @@ class ServiceCallImpl : ServiceCall {
 
     override fun getWeatherResponse(): Single<WeatherResponse> {
         val service = RetrofitApiClient().getRetrofit().create(WeatherService::class.java)
-        return service.getWeatherResponse("4153396161324c408c881756190109", "Banglore")
+        return service.getWeatherResponse("4153396161324c408c881756190109", "bangalore")
     }
 
 }
