@@ -15,9 +15,11 @@ class WeatherPresenter(private val serviceCall: ServiceCall) : WeatherContract.P
 
 
     override fun getWeatherData() {
+        view?.showLoading()
         serviceCall.getWeatherResponse()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess{view?.hideLoading()}
             .subscribe({ success -> handleSuccessResult(success)},
                 { error -> handleFailureResult(error)})
             .addTo(compositeDisposable)
