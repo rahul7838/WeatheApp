@@ -9,7 +9,15 @@ import com.example.weatherapp.WeatherApplication
 import com.example.weatherapp.dependencyinjection.WeatherComponent
 import javax.inject.Inject
 
-class WeatherFragment : Fragment() {
+class WeatherFragment : Fragment(), WeatherContract.View {
+
+    override fun showLoading() {
+
+    }
+
+    override fun hideLoading() {
+
+    }
 
     @Inject
     lateinit var presenter: WeatherContract.Presenter
@@ -26,5 +34,11 @@ class WeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.attachView(this)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.detachView()
     }
 }

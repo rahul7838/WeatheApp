@@ -7,13 +7,12 @@ import io.reactivex.Single
 
 class ServiceCallImpl : ServiceCall {
 
-//    companion object {
-//        const val KEY = "4153396161324c408c881756190109"
-//    }
+    companion object {
+        const val KEY = "4153396161324c408c881756190109"
+    }
 
     override fun getWeatherResponse(): Single<WeatherResponse> {
         val service = RetrofitApiClient().getRetrofit().create(WeatherService::class.java)
-        return service.getWeatherResponse("4153396161324c408c881756190109", "bangalore")
+        return service.getWeatherResponse(KEY, "bangalore")
     }
-
 }

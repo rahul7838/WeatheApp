@@ -32,7 +32,8 @@ class RetrofitApiClient {
             .build()
     }
 
-    val READ_WRITE_TIMEOUT: Long = 60
-    val CONNECTION_TIMEOUT: Long = 60
-
+    companion object {
+     const   val READ_WRITE_TIMEOUT: Long = 60
+     const   val CONNECTION_TIMEOUT: Long = 60
+    }
 }

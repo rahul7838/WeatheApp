@@ -9,7 +9,10 @@ import io.reactivex.schedulers.Schedulers
 
 class WeatherPresenter(private val serviceCall: ServiceCall) : WeatherContract.Presenter {
 
-    private val compositeDisposable = CompositeDisposable()
+    override var view: WeatherContract.View? = null
+
+    override var compositeDisposable: CompositeDisposable = CompositeDisposable()
+
 
     override fun getWeatherData() {
         serviceCall.getWeatherResponse()
