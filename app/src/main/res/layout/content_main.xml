@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/id_temp"
+        android:text="20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/temp_margin_top"
+        android:textColor="@color/temp_color"
+        android:textSize="@dimen/temp_font_size"
+        tools:text="20" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/temp_margin_top"
+        android:layout_toEndOf="@id/id_temp"
+        android:layout_toRightOf="@id/id_temp"
+        android:textColor="@color/temp_color"
+        android:textSize="36sp"
+        tools:text="o"
+        android:text="o"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/id_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id_temp"
+        android:layout_marginBottom="@dimen/location_bottom_margin"
+        android:textSize="@dimen/location_font_size"
+        tools:text="Bangalore"
+        android:textColor="@color/location_color"
+        android:text="Bangalore"/>
+
+
+</RelativeLayout>

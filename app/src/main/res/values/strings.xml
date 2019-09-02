@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+
+    <!--error page-->
+    <string name="button_retry">Retry</string>
+    <string name="error_text">Something went wrong at our end</string>
 </resources>

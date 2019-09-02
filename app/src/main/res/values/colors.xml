@@ -3,4 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="error_background">#E85959</color>
+    <color name="button_background">#4A4A4A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="temp_color">#2A2A2A</color>
+    <color name="main_screen_background">#F5F6F7</color>
+    <color name="location_color">#556799</color>
 </resources>
