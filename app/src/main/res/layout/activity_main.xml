@@ -10,4 +10,6 @@
 
     <include layout="@layout/content_main"/>
 
+    <include layout="@layout/custom_progress"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

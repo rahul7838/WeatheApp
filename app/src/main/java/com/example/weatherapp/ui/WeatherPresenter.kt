@@ -26,10 +26,13 @@ class WeatherPresenter(private val serviceCall: ServiceCall) : WeatherContract.P
 
     private fun handleFailureResult(error: Throwable) {
         view?.hideLoading()
+        view?.showErroScreen()
     }
 
     private fun handleSuccessResult(success: WeatherResponse) {
         view?.hideLoading()
+
+        view?.showWeatherData()
         val avgTemp = success.forecast.forecastday[0].day.avgtemp_c
     }
 }

@@ -8,4 +8,6 @@
     <dimen name="temp_font_size">96sp</dimen>
     <dimen name="location_bottom_margin">62dp</dimen>
     <dimen name="location_font_size">36sp</dimen>
+    <dimen name="error_text_font">54sp</dimen>
+    <dimen name="error_text_margin_bottom">44dp</dimen>
 </resources>
