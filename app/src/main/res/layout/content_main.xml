@@ -10,6 +10,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/id_temp"
         android:text="20"
+        android:fontFamily="@font/roboto_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/temp_margin_top"
@@ -34,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/id_temp"
         android:layout_marginBottom="@dimen/location_bottom_margin"
+        android:fontFamily="@font/roboto_thin"
         android:textSize="@dimen/location_font_size"
         tools:text="Bangalore"
         android:textColor="@color/location_color"
