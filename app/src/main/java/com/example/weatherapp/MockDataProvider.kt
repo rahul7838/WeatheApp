@@ -92,7 +92,7 @@ sealed class MockDataProvider {
         }
 
         fun getForeCastDay(): Forecastday {
-            return Forecastday(getAstro(), "45", 878, getDay())
+            return Forecastday(getAstro(), "2019-09-02", 878, getDay())
         }
 
         fun getForecast(): Forecast {

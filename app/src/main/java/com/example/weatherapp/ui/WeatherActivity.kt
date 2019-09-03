@@ -68,27 +68,16 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View, LocationListe
         spinner_layout.visibility = View.GONE
     }
 
-    override fun showWeatherData(listOfDayTemp: List<Pair<String, String>>) {
+    override fun showWeatherData(listOfDayTemp: ArrayList<Pair<String, String>>) {
         id_temp.text = listOfDayTemp[0].first
         id_location.text = cityName
         unit.text = resources.getString(R.string.degree)
         recycler_view_id.adapter =
             RecyclerViewAdapter(listOfDayTemp as ArrayList<Pair<String, String>>)
-        layout_bottom_sheet_id.visibility = View.VISIBLE
+        val moveAnimation = AnimationUtils.loadAnimation(this, R.anim.slid_up_anim)
+        layout_bottom_sheet_id.startAnimation(moveAnimation)
         content_main_id.visibility = View.VISIBLE
-
-//        bottomSheet = BottomSheetBehavior.from(layout_bottom_sheet_id)
-//        bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
-//        bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
-//        bottomSheet.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onSlide(p0: View, p1: Float) {
-//
-//            }
-//
-//            override fun onStateChanged(p0: View, p1: Int) {
-//
-//            }
-//        })
+        layout_bottom_sheet_id.visibility = View.VISIBLE
     }
 
 
@@ -180,7 +169,6 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View, LocationListe
 
     override fun onStart() {
         super.onStart()
-//        checkForPermission()
         getData()
     }
 

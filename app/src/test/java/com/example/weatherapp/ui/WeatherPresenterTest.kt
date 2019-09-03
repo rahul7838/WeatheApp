@@ -7,6 +7,7 @@ import org.junit.After
 import org.junit.Before
 
 import org.junit.Test
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -36,12 +37,13 @@ class WeatherPresenterTest {
 
     @Test
     fun getWeatherDataSuccessTest() {
+        val listPair = arrayListOf(Pair("86.22", "Monday"))
         Mockito.`when`(serviceCall.getWeatherResponse("Bangalore"))
             .thenReturn(Single.just(MockDataProvider.getWeatherResponseSuccess()))
         presenter.getWeatherData("Bangalore")
-        Mockito.verify(view).showLoading()
         Mockito.verify(serviceCall).getWeatherResponse("Bangalore")
         Mockito.verify(view).hideLoading()
+        Mockito.verify(view).showWeatherData(listPair)
     }
 
     @Test
@@ -49,8 +51,8 @@ class WeatherPresenterTest {
         Mockito.`when`(serviceCall.getWeatherResponse("Bangalore"))
             .thenReturn(Single.error(MockDataProvider.getWeatherResponseError()))
         presenter.getWeatherData("Bangalore")
-        Mockito.verify(view).showLoading()
         Mockito.verify(serviceCall).getWeatherResponse("Bangalore")
         Mockito.verify(view).hideLoading()
+        Mockito.verify(view).showErrorScreen()
     }
 }

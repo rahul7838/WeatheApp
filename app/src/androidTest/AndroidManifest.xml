@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.weatherapp">
+
+    <uses-sdk tools:overrideLibrary="android_libs.ub_uiautomator"/>
+
+    <application>
+        <activity android:name=".ui.WeatherActivity"
+            android:theme="@style/Theme.AppCompat"/>
+    </application>
+</manifest>
