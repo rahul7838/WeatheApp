@@ -5,12 +5,12 @@ import com.example.weatherapp.BaseContract
 interface WeatherContract {
 
     interface View : BaseContract.BaseView {
-        fun showWeatherData()
-        fun showErroScreen()
+        fun showWeatherData(listOfDayTemp: List<Pair<String, String>>)
+        fun showErrorScreen()
     }
 
 
     interface Presenter : BaseContract.BasePresenter<View> {
-        fun getWeatherData()
+        fun getWeatherData(cityName: String)
     }
 }

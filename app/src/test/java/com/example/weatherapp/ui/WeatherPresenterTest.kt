@@ -36,21 +36,21 @@ class WeatherPresenterTest {
 
     @Test
     fun getWeatherDataSuccessTest() {
-        Mockito.`when`(serviceCall.getWeatherResponse())
+        Mockito.`when`(serviceCall.getWeatherResponse("Bangalore"))
             .thenReturn(Single.just(MockDataProvider.getWeatherResponseSuccess()))
-        presenter.getWeatherData()
+        presenter.getWeatherData("Bangalore")
         Mockito.verify(view).showLoading()
-        Mockito.verify(serviceCall).getWeatherResponse()
+        Mockito.verify(serviceCall).getWeatherResponse("Bangalore")
         Mockito.verify(view).hideLoading()
     }
 
     @Test
     fun getWeatherDataErrorTest() {
-        Mockito.`when`(serviceCall.getWeatherResponse())
+        Mockito.`when`(serviceCall.getWeatherResponse("Bangalore"))
             .thenReturn(Single.error(MockDataProvider.getWeatherResponseError()))
-        presenter.getWeatherData()
+        presenter.getWeatherData("Bangalore")
         Mockito.verify(view).showLoading()
-        Mockito.verify(serviceCall).getWeatherResponse()
+        Mockito.verify(serviceCall).getWeatherResponse("Bangalore")
         Mockito.verify(view).hideLoading()
     }
 }

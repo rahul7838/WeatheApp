@@ -11,8 +11,8 @@ class ServiceCallImpl : ServiceCall {
         const val KEY = "4153396161324c408c881756190109"
     }
 
-    override fun getWeatherResponse(): Single<WeatherResponse> {
+    override fun getWeatherResponse(cityName: String): Single<WeatherResponse> {
         val service = RetrofitApiClient().getRetrofit().create(WeatherService::class.java)
-        return service.getWeatherResponse(KEY, "bangalore")
+        return service.getWeatherResponse(KEY, cityName, "5")
     }
 }

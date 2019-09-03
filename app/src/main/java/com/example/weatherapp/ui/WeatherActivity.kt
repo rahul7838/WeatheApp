@@ -1,23 +1,40 @@
 package com.example.weatherapp.ui
 
-import android.graphics.Typeface
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.WeatherApplication
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.bottom_sheet.*
+import kotlinx.android.synthetic.main.bottom_sheet2.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.custom_progress.*
+import java.util.*
 import javax.inject.Inject
 
 
-class WeatherActivity : AppCompatActivity(), WeatherContract.View {
+class WeatherActivity : AppCompatActivity(), WeatherContract.View, LocationListener {
 
-    override fun showErroScreen() {
+    private var cityName = ""
+
+    override fun showErrorScreen() {
 
     }
+
+    private val MY_PERMISSIONS_REQUEST_LOCATION: Int = 10
 
     @Inject
     lateinit var presenter: WeatherContract.Presenter
@@ -32,24 +49,27 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View {
 
     override fun hideLoading() {
         progress_bar_id.visibility = View.GONE
-
     }
 
-    override fun showWeatherData() {
+    override fun showWeatherData(listOfDayTemp: List<Pair<String, String>>) {
+        id_temp.text = listOfDayTemp[0].first
+        id_location.text = cityName
+        recycler_view_id.adapter =
+            RecyclerViewAdapter(listOfDayTemp as ArrayList<Pair<String, String>>)
         layout_bottom_sheet_id.visibility = View.VISIBLE
         content_main_id.visibility = View.VISIBLE
-        bottomSheet = BottomSheetBehavior.from(layout_bottom_sheet_id)
-        bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
-        bottomSheet.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(p0: View, p1: Float) {
-
-            }
-
-            override fun onStateChanged(p0: View, p1: Int) {
-
-            }
-        })
+//        bottomSheet = BottomSheetBehavior.from(layout_bottom_sheet_id)
+//        bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
+//        bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
+//        bottomSheet.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onSlide(p0: View, p1: Float) {
+//
+//            }
+//
+//            override fun onStateChanged(p0: View, p1: Int) {
+//
+//            }
+//        })
     }
 
 
@@ -57,9 +77,86 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View {
         super.onCreate(savedInstanceState)
         WeatherApplication.getInstance().weatherComponent.inject(this)
         setContentView(R.layout.activity_main)
-        presenter.attachView(this)
-        presenter.getWeatherData()
+        checkForPermission()
+        recycler_view_id.layoutManager = LinearLayoutManager(this)
     }
+
+    private fun checkForPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                MY_PERMISSIONS_REQUEST_LOCATION
+            )
+
+        } else {
+            getData()
+        }
+
+    }
+
+    private fun getData() {
+        val cityName = getCurrentLocation()
+        presenter.attachView(this)
+        presenter.getWeatherData(cityName)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_LOCATION -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    getData()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Permission required to show weather data",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                return
+            }
+
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
+        }
+    }
+
+
+    private fun getCurrentLocation(): String {
+        var locationManager = this
+            .getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isNetworkEnable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        if (!isNetworkEnable) {
+            this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        } else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+            ) {
+
+                locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    60000, 10f, this
+                )
+                val location: Location = locationManager
+                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                val latitude = location.latitude
+                val longitude = location.longitude
+                val geocoder = Geocoder(this, Locale.getDefault())
+                val address = geocoder.getFromLocation(latitude, longitude, 1)
+                cityName = address[0].locality
+            }
+        }
+        return cityName
+    }
+
 
     override fun onStart() {
         super.onStart()
@@ -73,4 +170,17 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View {
         super.onDestroy()
         presenter.detachView()
     }
+
+    override fun onLocationChanged(location: Location?) {
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+    }
+
+    override fun onProviderEnabled(provider: String?) {
+    }
+
+    override fun onProviderDisabled(provider: String?) {
+    }
+
 }
