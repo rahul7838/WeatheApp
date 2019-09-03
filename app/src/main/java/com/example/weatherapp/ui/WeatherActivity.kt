@@ -11,6 +11,10 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -19,9 +23,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.WeatherApplication
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet2.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.custom_progress.*
+import kotlinx.android.synthetic.main.weather_error.*
 import java.util.*
 import javax.inject.Inject
 
@@ -31,7 +37,7 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View, LocationListe
     private var cityName = ""
 
     override fun showErrorScreen() {
-
+        error_layout.visibility = View.VISIBLE
     }
 
     private val MY_PERMISSIONS_REQUEST_LOCATION: Int = 10
@@ -42,22 +48,35 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View, LocationListe
     private lateinit var bottomSheet: BottomSheetBehavior<View>
 
     override fun showLoading() {
-        progress_bar_id.visibility = View.VISIBLE
+        spinner_layout.visibility = View.VISIBLE
+        spinner.setImageDrawable(resources.getDrawable(R.drawable.ic_loading))
+        val rotate = RotateAnimation(
+            0f, 360f, Animation.RELATIVE_TO_SELF,
+            0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+        )
+        rotate.duration = 2000
+        rotate.interpolator = LinearInterpolator()
+        rotate.repeatMode = Animation.RESTART
+        rotate.repeatCount = Animation.INFINITE
+        spinner.startAnimation(rotate)
+
         layout_bottom_sheet_id.visibility = View.GONE
         content_main_id.visibility = View.GONE
     }
 
     override fun hideLoading() {
-        progress_bar_id.visibility = View.GONE
+        spinner_layout.visibility = View.GONE
     }
 
     override fun showWeatherData(listOfDayTemp: List<Pair<String, String>>) {
         id_temp.text = listOfDayTemp[0].first
         id_location.text = cityName
+        unit.text = resources.getString(R.string.degree)
         recycler_view_id.adapter =
             RecyclerViewAdapter(listOfDayTemp as ArrayList<Pair<String, String>>)
         layout_bottom_sheet_id.visibility = View.VISIBLE
         content_main_id.visibility = View.VISIBLE
+
 //        bottomSheet = BottomSheetBehavior.from(layout_bottom_sheet_id)
 //        bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
 //        bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
@@ -92,12 +111,13 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View, LocationListe
             )
 
         } else {
-            getData()
+            return
         }
 
     }
 
     private fun getData() {
+        showLoading()
         val cityName = getCurrentLocation()
         presenter.attachView(this)
         presenter.getWeatherData(cityName)
@@ -110,7 +130,7 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View, LocationListe
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_LOCATION -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    getData()
+                    return
                 } else {
                     Toast.makeText(
                         this,
@@ -154,16 +174,22 @@ class WeatherActivity : AppCompatActivity(), WeatherContract.View, LocationListe
                 cityName = address[0].locality
             }
         }
-        return cityName
+            return cityName
     }
 
 
     override fun onStart() {
         super.onStart()
+//        checkForPermission()
+        getData()
     }
 
     override fun onResume() {
         super.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
     }
 
     override fun onDestroy() {

@@ -17,7 +17,7 @@ class WeatherPresenter(private val serviceCall: ServiceCall) : WeatherContract.P
 
 
     override fun getWeatherData(cityName: String) {
-        view?.showLoading()
+//        view?.showLoading()
         serviceCall.getWeatherResponse(cityName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

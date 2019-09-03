@@ -40,8 +40,7 @@
         app:layout_constraintStart_toEndOf="@id/id_temp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:text="o"
-        android:text="o"/>
+        tools:text="o"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/id_location"
