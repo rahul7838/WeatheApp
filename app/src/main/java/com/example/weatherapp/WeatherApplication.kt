@@ -3,7 +3,6 @@ package com.example.weatherapp
 import android.app.Application
 import com.example.weatherapp.dependencyinjection.DaggerWeatherComponent
 import com.example.weatherapp.dependencyinjection.WeatherComponent
-import com.example.weatherapp.dependencyinjection.WeatherDiModule
 
 class WeatherApplication : Application() {
 
@@ -22,8 +21,6 @@ class WeatherApplication : Application() {
     }
 
     private fun initDi() {
-        weatherComponent = DaggerWeatherComponent.builder()
-            .weatherDiModule(WeatherDiModule())
-            .build()
+        weatherComponent = DaggerWeatherComponent.create()
     }
 }

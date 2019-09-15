@@ -2,10 +2,12 @@ package com.example.weatherapp.ui
 
 import com.example.weatherapp.data.WeatherServiceProvider
 import com.example.weatherapp.data.model.WeatherResponse
+import com.example.weatherapp.data.model.error.Error
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import retrofit2.HttpException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,15 +27,16 @@ class WeatherPresenter(private val weatherServiceProvider: WeatherServiceProvide
                 { error ->
                     run {
                         val error1 = error
-                        handleFailureResult(error)
+                        handleFailureResult(error as HttpException)
                     }
                 })
             .addTo(compositeDisposable)
     }
 
-    private fun handleFailureResult(error: Throwable) {
+    private fun handleFailureResult(error: HttpException) {
         view?.hideLoading()
-        view?.showErrorScreen()
+        val errorModel = Error(error.code(), error.message(), error.message())
+        view?.showErrorScreen(errorModel)
     }
 
     private fun handleSuccessResult(success: WeatherResponse) {
