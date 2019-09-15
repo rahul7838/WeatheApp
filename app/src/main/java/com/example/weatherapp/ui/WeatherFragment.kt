@@ -2,6 +2,8 @@ package com.example.weatherapp.ui
 
 import android.Manifest
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
@@ -92,19 +95,21 @@ class WeatherFragment : Fragment(), WeatherContract.View {
 
     private fun checkPermissionAndExecute() {
         activity?.let {
-            PermissionFragment.getPermissionFragment(it)
-                .executeWithPermissionCheck(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    {
-                        presenter.getWeatherData("abc")
-                    },
-                    this::permissionDenialHandling
-                )
+            Handler(Looper.getMainLooper()).post {
+                PermissionFragment.getPermissionFragment(it)
+                    .executeWithPermissionCheck(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        {
+                            presenter.getWeatherData("abc")
+                        },
+                        this::permissionDenialHandling
+                    )
+            }
         }
     }
 
     private fun permissionDenialHandling(boolean: Boolean) {
-        Snackbar.make(container, "permission is required", 5000)
+        Toast.makeText(context, "Permission is required", Toast.LENGTH_SHORT).show()
         showBanner()
     }
 
@@ -112,6 +117,9 @@ class WeatherFragment : Fragment(), WeatherContract.View {
 //        TODO show banner
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

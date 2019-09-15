@@ -23,10 +23,12 @@ class PermissionFragment : Fragment() {
                 activity.supportFragmentManager.findFragmentByTag(TAG) as PermissionFragment?
             if (fragment == null) {
                 fragment = PermissionFragment()
-                activity.supportFragmentManager
-                    .beginTransaction()
+                activity.supportFragmentManager.apply {
+                    beginTransaction()
                     .add(fragment, TAG)
-                    .commitAllowingStateLoss()
+                        .commitAllowingStateLoss()
+                    executePendingTransactions()
+                }
 
             }
             return fragment

@@ -9,12 +9,14 @@ fun AppCompatActivity.add(
     isBackStack: Boolean = true,
     backStackName: String? = fragment.javaClass.canonicalName
 ) {
-    with(this.supportFragmentManager?.beginTransaction()) {
-        if (isBackStack) {
-            this?.addToBackStack(backStackName)
+    with(this.supportFragmentManager) {
+        beginTransaction().run {
+            add(resContainer, fragment, backStackName)
+            if (isBackStack) {
+                addToBackStack(backStackName)
+            }
+            commit()
         }
-        this?.add(resContainer, fragment, backStackName)
-        this?.commit()
     }
 }
 
