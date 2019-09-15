@@ -1,12 +1,13 @@
 package com.example.weatherapp.ui
 
 import com.example.weatherapp.BaseContract
+import com.example.weatherapp.data.model.error.Error
 
 interface WeatherContract {
 
-    interface View : BaseContract.BaseView{
+    interface View : BaseContract.BaseView {
         fun showWeatherData(listOfDayTemp: ArrayList<Pair<String, String>>)
-        fun showErrorScreen()
+        fun showErrorScreen(errorModel: Error)
     }
 
 

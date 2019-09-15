@@ -19,8 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/content_main_id"/>
 
-        <include layout="@layout/weather_error"/>
-
     <include layout="@layout/custom_progress"/>
 
     </RelativeLayout>

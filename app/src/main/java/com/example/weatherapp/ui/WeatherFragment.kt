@@ -14,7 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.WeatherApplication
 import com.example.weatherapp.component.PermissionFragment
+import com.example.weatherapp.data.model.error.Error
+import com.example.weatherapp.error.WeatherErrorFragment
 import com.example.weatherapp.extension.gone
+import com.example.weatherapp.extension.replace
 import com.example.weatherapp.extension.visible
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.bottom_sheet2.*
@@ -58,8 +61,9 @@ class WeatherFragment : Fragment(), WeatherContract.View {
         layout_bottom_sheet_id.visible()
     }
 
-    override fun showErrorScreen() {
-
+    override fun showErrorScreen(errorModel: Error) {
+        val fragment = WeatherErrorFragment.instance(errorModel)
+         replace(fragment, R.id.container, false)
     }
 
     @Inject
@@ -92,7 +96,7 @@ class WeatherFragment : Fragment(), WeatherContract.View {
                 .executeWithPermissionCheck(
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     {
-                        presenter.getWeatherData("Bangalore ")
+                        presenter.getWeatherData("abc")
                     },
                     this::permissionDenialHandling
                 )
