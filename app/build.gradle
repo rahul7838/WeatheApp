@@ -28,11 +28,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    sourceSets {
-        main {
-            manifest.srcFile 'src/androidTest/AndroidManifest.xml'
-        }
-    }
+//    sourceSets {
+//        main {
+//            manifest.srcFile 'src/androidTest/AndroidManifest.xml'
+//        }
+//    }
 }
 
 dependencies {
