@@ -5,10 +5,10 @@ import com.example.weatherapp.networking.RetrofitApiClient
 import com.example.weatherapp.networking.WeatherService
 import io.reactivex.Single
 
-class ServiceCallImpl : ServiceCall {
+class WeatherServiceProviderImpl : WeatherServiceProvider {
 
     companion object {
-        const val KEY = "4153396161324c408c881756190109"
+            const val KEY = "4153396161324c408c881756190109"
     }
 
     override fun getWeatherResponse(cityName: String): Single<WeatherResponse> {

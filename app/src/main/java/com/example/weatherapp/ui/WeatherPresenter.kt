@@ -1,6 +1,6 @@
 package com.example.weatherapp.ui
 
-import com.example.weatherapp.data.ServiceCall
+import com.example.weatherapp.data.WeatherServiceProvider
 import com.example.weatherapp.data.model.WeatherResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WeatherPresenter(private val serviceCall: ServiceCall) : WeatherContract.Presenter {
+class WeatherPresenter(private val weatherServiceProvider: WeatherServiceProvider) : WeatherContract.Presenter {
 
     override var view: WeatherContract.View? = null
 
@@ -17,12 +17,17 @@ class WeatherPresenter(private val serviceCall: ServiceCall) : WeatherContract.P
 
 
     override fun getWeatherData(cityName: String) {
-//        view?.showLoading()
-        serviceCall.getWeatherResponse(cityName)
+        view?.showLoading()
+        weatherServiceProvider.getWeatherResponse(cityName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ success -> handleSuccessResult(success)},
-                { error -> handleFailureResult(error)})
+                { error ->
+                    run {
+                        val error1 = error
+                        handleFailureResult(error)
+                    }
+                })
             .addTo(compositeDisposable)
     }
 
